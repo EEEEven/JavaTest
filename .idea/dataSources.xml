@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="wzxydb.rwlb.rds.aliyuncs.com" uuid="26337b2e-7997-4fec-ab88-b73cb7102d51">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://wzxydb.rwlb.rds.aliyuncs.com:3306</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="rm-2ze2l62hisxauxxvwto.mysql.rds.aliyuncs.com" uuid="655b2729-3a06-4942-99dd-1a09b3d7e652">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://rm-2ze2l62hisxauxxvwto.mysql.rds.aliyuncs.com:3306</jdbc-url>
+    </data-source>
+  </component>
+</project>
