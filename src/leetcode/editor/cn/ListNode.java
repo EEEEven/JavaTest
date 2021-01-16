@@ -10,6 +10,7 @@ class ListNode {
 
     static void getAll(ListNode listNode){
         while (listNode != null){
+            System.out.println("123");
             System.out.println(listNode.val);
             listNode = listNode.next;
         }
