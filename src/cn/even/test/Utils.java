@@ -13,8 +13,8 @@ public class Utils {
      * @param i
      * @param j
      */
-    public static void swap(Integer[] array, Integer i, Integer j) {
-        Integer temp = array[i];
+    public static void swap(int[] array, int i, int j) {
+        int temp = array[i];
         array[i] = array[j];
         array[j] = temp;
     }
@@ -22,9 +22,9 @@ public class Utils {
     /**
      * 遍历数组
      */
-    public static void arrayErgodic(Object[] objects) {
-        for (Integer i = 0; i < objects.length; i++) {
-            System.out.println(objects[i]);
+    public static void arrayErgodic(int[] array) {
+        for (Integer i = 0; i < array.length; i++) {
+            System.out.println(array[i]);
         }
     }
 
