@@ -12,7 +12,7 @@ public class TestSort {
 //        testRandomInput(ints);
 //        arrayErgodic(ints);
 //        testQuickSort(ints, 0, ints.length - 1);
-        testInsertionSort(ints);
+        testSelectionSort(ints);
         for (int i = 0; i < ints.length; i++) {
             System.out.print(ints[i] + ",");
         }
@@ -20,52 +20,11 @@ public class TestSort {
 
 
     /**
-     * 计数排序
-     *
-     * @param array
-     * @return
-     */
-    public static int[] CountingSort(int[] array) {
-        if (array.length == 0) {
-            return array;
-        }
-        int bias, min = array[0], max = array[0];
-        for (int i = 1; i < array.length; i++) {
-            if (array[i] > max) {
-                max = array[i];
-            }
-            if (array[i] < min) {
-                min = array[i];
-            }
-        }
-        bias = 0 - min;
-        int[] bucket = new int[max - min + 1];
-        Arrays.fill(bucket, 0);
-        for (int i = 0; i < array.length; i++) {
-            bucket[array[i] + bias]++;
-        }
-        int index = 0, i = 0;
-        while (index < array.length) {
-            if (bucket[i] != 0) {
-                array[index] = i - bias;
-                bucket[i]--;
-                index++;
-            } else {
-                i++;
-            }
-        }
-        return array;
-    }
-
-
-    /**
      * 插入排序
      * <p>
-     * 分为已排序和未排序 两个区域
-     * <p>
-     * 从左向右扫描 每个num都会与num-n(n = 1;n++)进行比较，
-     * 当num-n大于num时，就将num-n向后挪一位；
-     * 当num-n小于num时，就将num插入到num-n后方；
+     * 插入排序将数组数据分成已排序区间和未排序区间。
+     * 初始已排序区间只有一个元素，即数组第一个元素。
+     * 在未排序区间取出一个元素插入到已排序区间的合适位置，直到未排序区间为空。
      *
      * @param array
      */
@@ -85,6 +44,86 @@ public class TestSort {
             //当前面的这个数小于当前数时，将当前数插入到此数后方
             array[j + 1] = tempValue;
             //已完成一个数的排序
+        }
+    }
+
+    /**
+     * 选择排序
+     * <p>
+     * 选择排序将数组分成已排序区间和未排序区间。
+     * 初始已排序区间为空。
+     * 每次从未排序区间中选出最小的元素插入已排序区间的末尾，直到未排序区间为空。
+     *
+     * @param array
+     */
+    public static void testSelectionSort(int[] array) {
+        for (int i = 0; i < array.length - 1; i++) {
+            //找到最小的
+            int minIndex = i;
+            for (int j = i + 1; j < array.length; j++) {
+                if (array[j] < array[minIndex]) {
+                    minIndex = j;
+                }
+            }
+            int temp = array[i];
+            array[i] = array[minIndex];
+            array[minIndex] = temp;
+        }
+    }
+
+    // 归并排序算法, a是数组，n表示数组大小
+    public static void mergeSort(int[] a, int n) {
+        mergeSortInternally(a, 0, n - 1);
+    }
+
+    // 递归调用函数
+    private static void mergeSortInternally(int[] a, int p, int r) {
+        // 递归终止条件
+        if (p >= r) {
+            return;
+        }
+
+        // 取p到r之间的中间位置q
+        int q = (p + r) / 2;
+        // 分治递归
+        mergeSortInternally(a, p, q);
+        mergeSortInternally(a, q + 1, r);
+
+        // 将A[p...q]和A[q+1...r]合并为A[p...r]
+        merge(a, p, q, r);
+    }
+
+    private static void merge(int[] a, int p, int q, int r) {
+        int i = p;
+        int j = q + 1;
+        int k = 0; // 初始化变量i, j, k
+        int[] tmp = new int[r - p + 1]; // 申请一个大小跟a[p...r]一样的临时数组
+
+        // 1 排序
+        while (i <= q && j <= r) {
+            if (a[i] <= a[j]) {
+                tmp[k++] = a[i++]; // i++等于i:=i+1
+            } else {
+                tmp[k++] = a[j++];
+            }
+        }
+
+        // 2 判断哪个子数组中有剩余的数据
+        int start = i;
+        int end = q;
+        if (j <= r) {
+            start = j;
+            end = r;
+        }
+
+        // 3 将剩余的数据拷贝到临时数组tmp
+        while (start <= end) {
+            tmp[k++] = a[start++];
+        }
+
+        // 4 将tmp中的数组拷贝回a[p...r]
+        for (i = 0; i <= r - p; ++i) {
+            a[p + i] = tmp[i];
         }
     }
 
@@ -165,6 +204,44 @@ public class TestSort {
         }
         if (smallIndex < end) {
             testQuickSort(array, smallIndex + 1, end);
+        }
+        return array;
+    }
+
+    /**
+     * 计数排序
+     *
+     * @param array
+     * @return
+     */
+    public static int[] CountingSort(int[] array) {
+        if (array.length == 0) {
+            return array;
+        }
+        int bias, min = array[0], max = array[0];
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > max) {
+                max = array[i];
+            }
+            if (array[i] < min) {
+                min = array[i];
+            }
+        }
+        bias = 0 - min;
+        int[] bucket = new int[max - min + 1];
+        Arrays.fill(bucket, 0);
+        for (int i = 0; i < array.length; i++) {
+            bucket[array[i] + bias]++;
+        }
+        int index = 0, i = 0;
+        while (index < array.length) {
+            if (bucket[i] != 0) {
+                array[index] = i - bias;
+                bucket[i]--;
+                index++;
+            } else {
+                i++;
+            }
         }
         return array;
     }
