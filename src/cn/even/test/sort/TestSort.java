@@ -1,4 +1,4 @@
-package cn.even.test;
+package cn.even.test.sort;
 
 import java.util.*;
 
@@ -8,11 +8,13 @@ import static cn.even.test.Utils.*;
 public class TestSort {
     public static void main(String[] args) {
         int[] ints = {12, 9, 5, 2};
+//        int[] ints = {2, 5, 9, 12};
 //        testBubbleSortReverse(ints);
 //        testRandomInput(ints);
 //        arrayErgodic(ints);
-//        testQuickSort(ints, 0, ints.length - 1);
-        testSelectionSort(ints);
+        testQuickSort(ints, 0, ints.length - 1);
+//        mergeSort(ints, ints.length);
+//        testSelectionSort(ints);
         for (int i = 0; i < ints.length; i++) {
             System.out.print(ints[i] + ",");
         }
@@ -72,94 +74,63 @@ public class TestSort {
     }
 
     // 归并排序算法, a是数组，n表示数组大小
-    public static void mergeSort(int[] a, int n) {
-        mergeSortInternally(a, 0, n - 1);
+    public static void mergeSort(int[] array, int n) {
+        mergeSortInternally(array, 0, n - 1);
     }
 
     // 递归调用函数
-    private static void mergeSortInternally(int[] a, int p, int r) {
+    private static void mergeSortInternally(int[] array, int startIndex, int endIndex) {
         // 递归终止条件
-        if (p >= r) {
+        if (startIndex >= endIndex) {
             return;
         }
 
-        // 取p到r之间的中间位置q
-        int q = (p + r) / 2;
+        // 取startIndex到endIndex之间的中间位置q
+        int midIndex = (startIndex + endIndex) / 2;
         // 分治递归
-        mergeSortInternally(a, p, q);
-        mergeSortInternally(a, q + 1, r);
+        mergeSortInternally(array, startIndex, midIndex);
+        mergeSortInternally(array, midIndex + 1, endIndex);
 
-        // 将A[p...q]和A[q+1...r]合并为A[p...r]
-        merge(a, p, q, r);
+        // 将array[startIndex...endIndex]和array[midIndex+1...endIndex]合并为array[startIndex...endIndex]
+        merge(array, startIndex, midIndex, endIndex);
     }
 
-    private static void merge(int[] a, int p, int q, int r) {
-        int i = p;
-        int j = q + 1;
+    private static void merge(int[] array, int startIndex, int midIndex, int endIndex) {
+        int i = startIndex;
+        int j = midIndex + 1;
         int k = 0; // 初始化变量i, j, k
-        int[] tmp = new int[r - p + 1]; // 申请一个大小跟a[p...r]一样的临时数组
+        int[] tmp = new int[endIndex - startIndex + 1]; // 申请一个大小跟array[startIndex...endIndex]一样的临时数组
 
         // 1 排序
-        while (i <= q && j <= r) {
-            if (a[i] <= a[j]) {
-                tmp[k++] = a[i++]; // i++等于i:=i+1
+        while (i <= midIndex && j <= endIndex) {
+            if (array[i] <= array[j]) {
+                tmp[k++] = array[i++]; // i++等于i:=i+1
             } else {
-                tmp[k++] = a[j++];
+                tmp[k++] = array[j++];
             }
         }
 
         // 2 判断哪个子数组中有剩余的数据
         int start = i;
-        int end = q;
-        if (j <= r) {
+        int end = midIndex;
+        if (j <= endIndex) {
             start = j;
-            end = r;
+            end = endIndex;
         }
 
         // 3 将剩余的数据拷贝到临时数组tmp
         while (start <= end) {
-            tmp[k++] = a[start++];
+            tmp[k++] = array[start++];
         }
 
-        // 4 将tmp中的数组拷贝回a[p...r]
-        for (i = 0; i <= r - p; ++i) {
-            a[p + i] = tmp[i];
+        // 4 将tmp中的数组拷贝回array[startIndex...endIndex]
+        for (i = 0; i <= endIndex - startIndex; ++i) {
+            array[startIndex + i] = tmp[i];
         }
     }
 
 
-    /**
-     * 快速排序方法
-     * <p>
-     * 运用到了分治思想
-     * 通过一个基数pivot，将小于pivot的元素左置，大于pivot的元素右置
-     * 再通过递归将 小于基数pivot的子数组和大于基数pivot的子数组 进行排序
-     *
-     * @param array
-     * @param start
-     * @param end
-     * @return
-     */
-    public static int[] testQuickSortPractice(int[] array, int start, int end) {
-        int[] ints = {5, 12, 2, 98, 19, 25, 1, 67, 32};
-        int pivot = end;
-        int smallIndex = start - 1;
-        for (int i = start; i <= end; i++) {
-            if (array[end] >= array[i]) {
-                smallIndex++;
-                if (i > smallIndex) {
-                    swap(array, pivot, i);
-                }
-            }
-        }
-        if (smallIndex < end) {
-            testQuickSortPractice(array, start, smallIndex);
-        }
-        /*if (smallIndex) {
 
-        }*/
-        return array;
-    }
 
     /**
      * 快速排序方法
@@ -177,15 +148,23 @@ public class TestSort {
         if (array.length < 1 || start < 0 || end >= array.length || start > end) {
             return null;
         }
+        int smallIndex = partition(array, start, end);
+        //再将smallIndex作为分界点,进行递归排序
+        if (smallIndex > start) {
+            testQuickSort(array, start, smallIndex - 1);
+        }
+        if (smallIndex < end) {
+            testQuickSort(array, smallIndex + 1, end);
+        }
+        return array;
+    }
+
+    public static int partition(int[] array, int start, int end){
         //选取一个数作为基数pivot，从start到end，都依次与pivot进行比较;
-        //本次以随机数作为基数
-//        int pivot = (int) (start + Math.random() * (end - start + 1));
+        int pivot = end;
         //创建一个初始值为start-1的smallIndex作为标记;
         int smallIndex = start - 1;
-        //将end与pivot交换位置,方便比较;
-//        swap(array, pivot, end);
-        int pivot = end;
-        for (int i = start; i <= pivot; i++) {
+        for (int i = start; i <= end; i++) {
             //如果当前下标i对应的元素大于pivot对应的元素,直接进入下一次迭代;
             //如果当前下标i对应的元素小于等于pivot对应的元素,smallIndex+1;
             //如果当前下标i对应的元素等于pivot对应的元素，则为最后一次迭代,
@@ -198,15 +177,9 @@ public class TestSort {
                 }
             }
         }
-        //再将smallIndex作为分界点,进行递归排序
-        if (smallIndex > start) {
-            testQuickSort(array, start, smallIndex - 1);
-        }
-        if (smallIndex < end) {
-            testQuickSort(array, smallIndex + 1, end);
-        }
-        return array;
+            return smallIndex;
     }
+
 
     /**
      * 计数排序

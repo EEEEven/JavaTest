@@ -1,5 +1,8 @@
 package cn.even.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @Author 刘义文
  * @Date 2020/12/21 17:32
@@ -37,5 +40,49 @@ public class TestMath {
             return fibonacci(i - 1) + fibonacci(i - 2);
         }
     }
+
+    private static List<Integer> rankToStudentDataRights(List<Integer> integerList) {
+        List<Integer> list = new ArrayList<>();
+        if(integerList.contains(2)){
+            list.add(4);
+        }
+        if(integerList.contains(3)){
+            list.add(3);
+        }
+        if(integerList.contains(4)){
+            list.add(0);
+        }
+        if(integerList.contains(5)){
+            list.add(1);
+        }
+        return list;
+    }
+
+    public static void main(String[] args) {
+        List<Integer> list = new ArrayList<>();
+        list.add(2);
+        list.add(3);
+        list.add(4);
+        list.add(5);
+        List<Integer> list1 = rankToStudentDataRights(list);
+        System.out.println(list.toString());
+        System.out.println(list1.toString());
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
