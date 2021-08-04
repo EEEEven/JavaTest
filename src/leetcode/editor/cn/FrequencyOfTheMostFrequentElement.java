@@ -53,36 +53,70 @@ import java.util.Arrays;
  * 最高频元素的频数
  */
 class FrequencyOfTheMostFrequentElement {
+
     public static void main(String[] args) {
-        int[] array = new int[]{1,4,8,13};
+//        int[] array = new int[]{1, 4, 8, 13};
+        int[] array = new int[]{1, 2, 4};
         int i = maxFrequency(array, 5);
         System.out.println(i);
     }
 
+    /*
+    # 滑动窗口模板
+    left,right = 0, (0 or 1)
+    res = total = 0
+    while right < len(nums):
+       更新total值
+       while 窗口内数据不满足要求
+          1. 更新total值
+          2. 收缩左边界
+       更新res最大值
+    返回 res
+     */
+
     public static int maxFrequency(int[] nums, int k) {
+        int left = 0;
+        int total = 0;
+        int res = 1;
         Arrays.sort(nums);
-        int n = nums.length;
-        long total = 0;
-        int l = 0, res = 1;
-        for (int r = 1; r < n; ++r) {
-            total += (long) (nums[r] - nums[r - 1]) * (r - l);
+        for (int right = 1; right < nums.length; right++) {
+            //right - left 为窗口内除最大数的个数总和
+            //(right - left) *
+            total += (right - left) * (nums[right] - nums[right - 1]);
+            //窗口内数据需要的操作次数大于k，即窗口内的数据不满足要求
             while (total > k) {
-                total -= nums[r] - nums[l];
-                ++l;
+                //因为nums是已排过序的数组，所以right在窗口内总是最大的，即right-left=需要减掉的操作数.
+                total -= nums[right] - nums[left];
+                left++;
             }
-            res = Math.max(res, r - l + 1);
+            res = Math.max(res, right - left + 1);
+        }
+        return res;
+    }
+
+}
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int maxFrequency(int[] nums, int k) {
+        int left = 0;
+        int total = 0;
+        int res = 1;
+        Arrays.sort(nums);
+        for (int right = 1; right < nums.length; right++) {
+            //right - left 为窗口内除最大数的个数总和
+            //(right - left) *
+            total += (right - left) * (nums[right] - nums[right - 1]);
+            //窗口内数据需要的操作次数大于k，即窗口内的数据不满足要求
+            while (total > k) {
+                //因为nums是已排过序的数组，所以right在窗口内总是最大的，即right-left=需要减掉的操作数.
+                total -= nums[right] - nums[left];
+                left++;
+            }
+            res = Math.max(res, right - left + 1);
         }
         return res;
     }
 }
-
-/*
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int maxFrequency(int[] nums, int k) {
-
-    }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
-*/
