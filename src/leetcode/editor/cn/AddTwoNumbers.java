@@ -37,6 +37,20 @@ public class AddTwoNumbers {
         ListNode.getAll(listNode);
 
     }
+
+    /**
+     * 从个位数开始计算
+     *
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+
+        int n = l1.val + l2.val;
+        return null;
+    }
+
 //leetcode submit region begin(Prohibit modification and deletion)
 
     /**
@@ -50,6 +64,7 @@ public class AddTwoNumbers {
     class Solution {
         /**
          * 从个位数开始计算
+         *
          * @param l1
          * @param l2
          * @return

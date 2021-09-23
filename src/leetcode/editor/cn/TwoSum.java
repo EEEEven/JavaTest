@@ -21,61 +21,43 @@ import java.util.Map;
 
 public class TwoSum {
     public static void main(String[] args) {
-        Solution2 solution = new TwoSum().new Solution2();
+        Solution solution = new TwoSum().new Solution();
         int[] ints = solution.twoSum(new int[]{2, 7, 11, 15}, 13);
         for (int i : ints) {
             System.out.println(i);
         }
     }
 
-    class Solution2 {
+    class Solution {
         public int[] twoSum(int[] ints, int sum) {
             Map<Integer, Integer> map = new HashMap<>();
             for (int i = 0; i < ints.length; i++) {
                 if (map.containsKey(ints[i])) {
-                    return new int[]{map.get(ints[i]), i};
+                    Integer index = map.get(ints[i]);
+                    return new int[]{index, i};
                 }
-
                 map.put(sum - ints[i], i);
             }
             return null;
         }
     }
 
-    //leetcode submit region begin(Prohibit modification and deletion)
-    /*class Solution {
-        public int[] twoSum(int[] nums, int target) {
-            Map<Integer, Integer> map = new HashMap<>();
-            for (int i = 0; i < nums.length; i++) {
-                //如果当前下标的值为map中的x键，
-                //则当前下标的值+map中x键所对应的值就等于target
-                if (map.containsKey(nums[i])) {
-                    return new int[]{map.get(nums[i]), i};
-                }
-                //key为需要的第二个值，value为第一个值的下标
-                map.put(target - nums[i], i);
-            }
-            return null;
-        }
-    }*/
-
-    /*class Solution {
-        public int[] twoSum(int[] nums, int target) {
-
-            int[] result = null;
-
-            for (int i = 0; i < nums.length - 1; i++) {
-                for (int j = nums.length - 1; j > i; j--) {
-                    if (nums[i] + nums[j] == target) {
-                        result = new int[]{i, j};
-                    }
-                }
-            }
-
-            return result;
-        }
-    }*/
-
-//leetcode submit region end(Prohibit modification and deletion)
 
 }
+//leetcode submit region begin(Prohibit modification and deletion)
+/*class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            //如果当前下标的值为map中的x键，
+            //则当前下标的值+map中x键所对应的值就等于target
+            if (map.containsKey(nums[i])) {
+                return new int[]{map.get(nums[i]), i};
+            }
+            //key为需要的第二个值，value为第一个值的下标
+            map.put(target - nums[i], i);
+        }
+        return null;
+    }
+}*/
+//leetcode submit region end(Prohibit modification and deletion)
