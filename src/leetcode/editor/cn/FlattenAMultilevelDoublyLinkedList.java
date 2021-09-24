@@ -84,17 +84,45 @@ package leetcode.editor.cn;
 
 
 /*
-* 扁平化多级双向链表
-*/
-class FlattenAMultilevelDoublyLinkedList{
-    public static void main(String[] args){
-        
-    }
-} 
+ * 扁平化多级双向链表
+ */
+class FlattenAMultilevelDoublyLinkedList {
+    public static void main(String[] args) {
 
-/*
+    }
+
+    static Node flatten(Node head) {
+        Node result = new Node();
+        Node curr = new Node();
+        result.next = curr;
+        curr.prev = result;
+        while (head.next != null) {
+            curr.val = head.val;
+            Node temp = new Node();
+            temp.prev = curr;
+            curr.next = temp;
+            curr = temp;
+            if (head.child != null) {
+                Node childNode = flatten(head.child);
+                childNode.prev = curr.prev;
+                childNode.prev.next = childNode;
+                curr = childNode;
+                while (curr.next != null) {
+                    curr = curr.next;
+                }
+                temp = new Node();
+                temp.prev = curr;
+                curr.next = temp;
+                curr = temp;
+            }
+            head = head.next;
+        }
+        return result.next;
+    }
+
+}
+
 //leetcode submit region begin(Prohibit modification and deletion)
-/*
 // Definition for a Node.
 class Node {
     public int val;
@@ -102,13 +130,36 @@ class Node {
     public Node next;
     public Node child;
 };
-*/
 
 class Solution {
     public Node flatten(Node head) {
-        
+        Node result = new Node();
+        Node curr = new Node();
+        result.next = curr;
+        curr.prev = result;
+        while (head.next != null) {
+            curr.val = head.val;
+            Node temp = new Node();
+            temp.prev = curr;
+            curr.next = temp;
+            curr = temp;
+            if (head.child != null) {
+                Node childNode = flatten(head.child);
+                childNode.prev = curr.prev;
+                childNode.prev.next = childNode;
+                curr = childNode;
+                while (curr.next != null) {
+                    curr = curr.next;
+                }
+                temp = new Node();
+                temp.prev = curr;
+                curr.next = temp;
+                curr = temp;
+            }
+            head = head.next;
+        }
+        return result.next;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
-*/
